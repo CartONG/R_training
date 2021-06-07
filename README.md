@@ -1,5 +1,7 @@
 # R-Webinar
 
-### What is it?
-R is xxx....
+
+## PRESENTATION OUTLINE 
+### Introduction
+#### 1 - What is it?
 
