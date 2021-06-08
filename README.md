@@ -1,5 +1,6 @@
 # R-Webinar
 
+
 ## PRESENTATION OUTLINE 
 ### Introduction
 #### 1 - What is it?
@@ -24,3 +25,4 @@ Focus on humanitarian IM + GIS
 ### Ressources
 https://humanitarian-user-group.github.io
 This site hosts information related to the HumanitaRian-useR-group. This group is open to Humanitarian Information Management officers from any organisation. The initial group was created in November 2018 after a workshop in Amman funded by UNHCR.
+
