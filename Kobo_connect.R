@@ -10,9 +10,7 @@ library(tidyverse)
 library(devtools)
 source_url("https://raw.githubusercontent.com/ppsapkota/kobohr_apitoolbox/master/R/r_func_ps_kobo_utils.R")
 
-#Set kobo credentials
-kobo_user <- "abel78"
-kobo_pw <- "Liagelman2006"
+#Set kobo credentials --> in separate script
 
 #Download form/project list
 url <-"https://kc.humanitarianresponse.info/api/v1/data.csv" #downloads list of all projects in the kobo account
