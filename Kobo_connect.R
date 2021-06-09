@@ -81,7 +81,7 @@ form_id<-"amAXvCQ2QbikAXoEh7SSuB" #2020 DRS Livelihoods demo survey
 
 ### Test 1 : FAILS
 download.file(
-  url = "https://kobo.unhcr.org/api/v2/assets/amAXvCQ2QbikAXoEh7SSuB.xls",
+  url = "https://kobo.unhcr.org/assets/amAXvCQ2QbikAXoEh7SSuB/submissions/?format=json",
   destfile = "liv_2020_demo"
   
 )
@@ -98,9 +98,12 @@ view(d_formlist_csv)
 
 #Download data in CSV format
 
-form_id <- d_formlist_csv[24,2]# form ID of the data to download. Manually checked the id in view()
+# https://kobo.unhcr.org/assets/{uuid}/submissions/?format=json
 
-url <- paste("https://kc.humanitarianresponse.info/api/v1/data/",form_id, ".csv", sep = "")
+url <- paste("https://kobo.unhcr.org/assets/",form_id, "/submissions/?format=json", sep = "")
 d_raw <- kobohr_getdata_csv(url,kobo_user,kobo_pw)  
 data <- as.data.frame(d_raw)
 
+
+view(data)
+amAXvCQ2QbikAXoEh7SSuB.xls
