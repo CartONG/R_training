@@ -35,7 +35,11 @@ View(SLV_admin)
 ################################################################################
 ## B - Download data from KoboToolBox - HTTT GET
 ## Source: https://github.com/ppsapkota/kobohr_apitoolbox
+## Source: https://humanitarian-user-group.github.io/post/kobo_restapi/
+################################################################################
 
+
+## OCHA #####################
 
 library(httr)
 library(tidyverse)
@@ -44,7 +48,6 @@ library(devtools)
 source_url("https://raw.githubusercontent.com/ppsapkota/kobohr_apitoolbox/master/R/r_func_ps_kobo_utils.R")
 
 
-# OCHA
 #Set kobo credentials --> in separate script
 
 #Download form/project list
@@ -63,11 +66,8 @@ d_raw <- kobohr_getdata_csv(url,kobo_user,kobo_pw)
 data <- as.data.frame(d_raw)
 
 
+## UNHCR ######################## 
 
-
-################################################################################
-## Source: https://humanitarian-user-group.github.io/post/kobo_restapi/
-################################################################################
 
 library(httr)
 library(jsonlite) # package for working with JSON data
@@ -75,14 +75,32 @@ library(jsonlite) # package for working with JSON data
 library(readr) # to read CSV data
 library(openxlsx) # to write to excel file
 
-# UNHCR
 # Set form ID from kobo 
 form_id<-"amAXvCQ2QbikAXoEh7SSuB" #2020 DRS Livelihoods demo survey
 
+
+### Test 1 : FAILS
 download.file(
   url = "https://kobo.unhcr.org/api/v2/assets/amAXvCQ2QbikAXoEh7SSuB.xls",
   destfile = "liv_2020_demo"
   
 )
 
+
+### Test 2 : FAILS
+
+#Download form/project list
+url <-"https://kobo.unhcr.org/api/v2/data.csv" #downloads list of all projects in the kobo account
+d_formlist_csv <- kobohr_getforms_csv (url,kobo_user, kobo_pw)
+d_formlist_csv <- as.data.frame(d_formlist_csv)
+
+view(d_formlist_csv)
+
+#Download data in CSV format
+
+form_id <- d_formlist_csv[24,2]# form ID of the data to download. Manually checked the id in view()
+
+url <- paste("https://kc.humanitarianresponse.info/api/v1/data/",form_id, ".csv", sep = "")
+d_raw <- kobohr_getdata_csv(url,kobo_user,kobo_pw)  
+data <- as.data.frame(d_raw)
 
