@@ -15,6 +15,12 @@ Focus on humanitarian IM + GIS
 ("https://cran.r-project.org/") -> The Comprhensive R Archive Network: CRAN is a network of ftp and web servers around the world that store identical, up-to-date, versions of code and documentation for R. Please use the CRAN mirror nearest to you to minimize network load. 
 
 ### 4 - Libraries 
+Search for packages in Google: CRAN {"package_name"}
+
+Example Google search : "cran google sheets"
+
+CRAN page of the googlesheets4 package: https://cran.r-project.org/web/packages/googlesheets4/index.html
+googlesheets4 manual PDF: https://cran.r-project.org/web/packages/googlesheets4/googlesheets4.pdf
 
 ### 5 - R Studio IDE
 
