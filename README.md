@@ -2,7 +2,9 @@
 
 
 ## PRESENTATION OUTLINE 
-### Introduction
+
+### INTRODUCTION
+
 #### 1 - What is it?
 When it was created
 Main characteristics
@@ -24,8 +26,20 @@ googlesheets4 manual PDF: https://cran.r-project.org/web/packages/googlesheets4/
 
 ### 5 - R Studio IDE
 
-### Workflow
-#### Import: readr + haven + XLSX + DBI?
+## WORKFLOW
+### 1- Importing data
+A - Download data from the web
+B - Download data from Kobo (OCHA & UNHCR)
+C - Connect to external databases: DBI package
+
+### 2- Data wrangling
+
+
+
+
+
+
+
 
 
 ### Ressources
