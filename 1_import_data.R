@@ -131,3 +131,10 @@ while(!dbHasCompleted(res)){
 dbClearResult(res)
 
 dbDisconnect(con)
+
+
+######################################################
+## D -Connect to HDX data
+######################################################
+## Source: 
+
