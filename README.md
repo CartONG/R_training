@@ -53,7 +53,7 @@ Easy to reuse (as compared to Excel)$
 Easy to audit
 Supports version control
 Reads every possible format
-Mutltiple output formats
+Multiple output formats
 Runs fast
 Support large datasets
 Support advance automation

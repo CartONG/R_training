@@ -66,7 +66,7 @@ d_raw <- kobohr_getdata_csv(url,kobo_user,kobo_pw)
 data <- as.data.frame(d_raw)
 
 
-## UNHCR ######################## 
+## Kobo UNHCR ######################## 
 
 
 library(httr)
@@ -90,6 +90,9 @@ nrow(data)
 colnames(data)
 table(data$Country, data$`BENEFICIARY_INFO/Gender`)
 
+#### Connection to ODK Central
+## https://docs.getodk.org/central-submissions/#central-submissions-odata
+## Show screenshot 
 
  
 ################################################################################
@@ -136,5 +139,7 @@ dbDisconnect(con)
 ######################################################
 ## D -Connect to HDX data
 ######################################################
-## Source: 
+## Source: https://humanitarian-user-group.github.io/post/rhdx_demo/
+
+
 
