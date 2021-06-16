@@ -235,6 +235,7 @@ y_ttlG <- ggplot(y_ttlG, aes(x=Yield))+
              ncol = 2)
 
 
+
 y_ttlG
 
 ## filter out problematic yield entries
