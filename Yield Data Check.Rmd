@@ -1,0 +1,159 @@
+---
+title: "UNHCR DRS Livelihoods - Crop Yield Data Check "
+output: 
+  pdf_document: 
+    latex_engine: xelatex
+    fig_width: 3
+    fig_height: 3
+    fig_crop: no
+header-includes:
+  - \usepackage{fontspec}
+  - \setmainfont{Arial}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r plot, echo=FALSE, include=FALSE }
+
+library(tidyverse)
+
+###### Store the link to the raw dataset hosts in github 
+drs_df_raw_link <- "https://raw.githubusercontent.com/CartONG/R_training/main/df19.csv?token=ALMJAS6PHLQDK4FAFSCP763A2CBVI"
+
+# R "guesses" the column type by analyzing the 1st 1000 rows of each columns. In larger files, like the one we are working with here, this could lead to errors.
+
+# downlaod file again but forcing R to read all columns as character
+df19 <- read_csv(drs_df_raw_link,
+                 col_types = cols(.default = "c"))
+
+
+### Create a function
+
+# Identify crops by country
+crop_check <- function(drs_df, base_end = c("Baseline", "Endilne"), Country_ = "All"){
+  require(tidyverse)
+  '
+  1 - Filter by country & EL/BL
+  
+  2 - Extract vector of crops
+    a - vector crop 1
+    b - vector crop2
+    c - join vectors
+  3 - output unique values
+  
+  '
+  base_end <- match.arg(base_end)
+  
+  if (Country_ == "All")
+    temp <- drs_df %>% 
+    filter(BE == base_end)
+  
+  else
+    temp <- drs_df %>% 
+    filter(BE == base_end & Country == Country_)
+   
+  c1 <- unique(temp$Crop1)
+  
+  c2 <- unique(temp$Crop2)
+  
+  c <- unique(c(c1, c2))
+  c <- c[!is.na(c)]
+  c <- c[c != 0]
+    
+  
+  return(c)
+    
+}
+
+# Graph problematic data entries
+crop_yield <- function(df_drs, Crop, base_end = c("Baseline", "Endline"), Country = "All", Threshold = 100, Bin_width = 100){
+  
+  base_end <- match.arg(base_end)
+  
+  #crop 1
+  if (Country == "All")
+    t1 <- df_drs %>% 
+    select(BE, Crop1, Country, Crop1KG, Crop1HA) %>% 
+    filter(BE == base_end & Crop1 == Crop)
+  
+  else 
+    t1 <- df_drs %>% 
+      select(BE, Crop1, Country, Crop1KG, Crop1HA) %>% 
+      filter(BE == base_end & Crop1 == Crop & Country == Country)
+  
+  t1 <- t1 %>% 
+    rename(Crop = Crop1,
+           CropKG = Crop1KG,
+           CropHA = Crop1HA)
+  
+
+  #Crop2
+  if (Country == "All")
+    t2 <- df_drs %>% 
+    select(BE, Crop2, Country, Crop2KG, Crop2HA) %>% 
+    filter(BE == base_end & Crop2 == Crop)
+  
+  else 
+    t2 <- df_drs %>% 
+    select(BE, Crop2, Country, Crop2KG, Crop2HA) %>% 
+    filter(BE == base_end & Crop2 == Crop & Country == Country)
+  
+  t2 <- t2 %>% 
+    rename(Crop = Crop2,
+           CropKG = Crop2KG,
+           CropHA = Crop2HA)
+  
+  
+  
+  # combine crop lists
+  t <- bind_rows(t1, t2)
+  t$CropKG <- as.numeric(t$CropKG)
+  t$CropHA <- as.numeric(t$CropHA)
+  
+  
+  t <- t %>% 
+    mutate(Yield = CropKG / CropHA,
+           Check = Yield < Threshold)
+  
+  t_graph <- ggplot(t, aes(x=Yield)) +
+    geom_histogram(data = subset(t, Check == TRUE), binwidth = Bin_width, fill = "red4")+
+    geom_histogram(data = subset(t, Check == FALSE), binwidth = Bin_width, fill = "#0072BC")+
+    labs(title = paste(Crop, "Yield (Kg/Ha) Per Seasson Per Sampled Beneficiary"))+
+    xlab(paste(Crop,"yield (Kg/Ha) per season"))+
+    ylab("# of sampled beneficairies")+
+    scale_x_continuous(label=function(x){
+      x <- x/1000
+      return(paste(x, "To"))})
+  
+  return(t_graph)
+    
+  
+}
+```
+## Burkina Faso
+Crops:
+```{r, echo=FALSE}
+
+temp_x <- crop_check(df19, "Baseline", "Burkina Faso")
+temp_x
+
+
+
+
+
+```
+## Plots
+```{r pressure, echo=FALSE, fig.height=5,fig.width=5,out.height='50%',out.width='50%'}
+
+for (c in 1: length(temp_x)){
+  x <- temp_x[c]
+  y <- crop_yield(df19, x, "Baseline", "Burkina Faso", Threshold = 200, Bin_width = 200)
+  print(y)
+
+}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
