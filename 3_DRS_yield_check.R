@@ -10,7 +10,7 @@ library(tidyverse)
 # Dataset available in Github: CartONG/R_traning repo
 
 # Store the link to the raw dataset hostes in github 
-drs_df_raw_link <- "https://raw.githubusercontent.com/CartONG/R_training/main/df19.csv?token=ALMJAS6PHLQDK4FAFSCP763A2CBVI"
+drs_df_raw_link <- "https://raw.githubusercontent.com/CartONG/R_training/main/df19.csv?token=ALMJASZ7ZQ23VFXS5VPZOEDA2MM42"
 
 #download file and store in workspace
 df19 <- read_csv(drs_df_raw_link)
@@ -40,7 +40,7 @@ yield1 <- df19 %>%
   filter(BE == "Baseline" & Crop1 == "Cassava") %>% # filter rows by Baseline and crop (cassava)
   rename(Crop = Crop1, # rename column names
          CropKG = Crop1KG,
-         CropHA = Crop1HA)
+         CropHA = Crop1HA) 
 
 yield1[4:5] <- sapply(yield1[4:5], as.numeric) # convert character columns that have numeric data to numeric
 
@@ -60,17 +60,36 @@ yield_all <- yield %>%
   mutate(Yield = CropKG/CropHA, # crate new column calculating yield
          Check = Yield < 350) # set a threshold for yield under which we can assume the data entry is problematic
 
+yield_all$Check <- as.factor(yield_all$Check)
+
 # Plot cassava yield distribution in an histogram highlighting problematic entries
+library(hrbrthemes)
 yield_all_g <- ggplot(yield_all, aes(x=Yield))+
   geom_histogram(data = subset(yield_all, Check==TRUE), binwidth = 300, fill="red4")+
   geom_histogram(data = subset(yield_all, Check==FALSE), binwidth = 300, fill="#0072BC")+
-  labs(title ="Cassava Yield (Kg/Ha) Per Seasson Per Sampled Beneficiary",
+  labs(title ="Cassava \nYield (Kg/Ha) Per Seasson Per Sampled Beneficiary",
        caption = "Source: UNHCR DRS 2019 livelihoods")+
-  xlab("Cassava yield (Kg/Ha) per season")+
-  ylab("# of sampled beneficairies")+
+  labs(x = "Cassava yield (To/Ha) per season",
+       y = "# of sampled beneficairies",
+       color = "legend")+
   scale_x_continuous(label=function(x){
     x <- x/1000
-    return(paste(x, "To"))})
+    return(paste(x, "To"))})+
+  scale_color_manual(values = colors)+
+  theme_ipsum()
+
+
+yield_all_g <- ggplot(yield_all, aes(x=Yield, fill = Check))+
+  geom_histogram(binwidth = 350)+
+  labs(title ="Cassava \nYield (To/Ha) Per Seasson Per Sampled Beneficiary",
+       caption = "Source: UNHCR DRS 2019 livelihoods \nHistogram bin width: 350")+
+  labs(x = "Cassava yield (To/Ha) per season",
+       y = "# of sampled beneficairies")+
+  scale_x_continuous(label=function(x){
+    x <- x/1000
+    return(paste(x, "To"))})+
+  theme_ipsum()+
+  scale_fill_manual(values = c("#0072BC","red4"))
 
 
 yield_all_g
@@ -251,14 +270,25 @@ fiterDR <- df19
 
 # if enough:
 # Compare yield change btw baseline and endline 
+
 # compare yield change by Country (only country with enough data if any)
 
 
 # SCATTER PLOT: x= yield, y=FamilySize, colored by: O1IncomeFarming
 
+df19$Crop1KG <- as.numeric(df19$Crop1KG)
+df19$Crop1HA <- as.numeric(df19$Crop1HA)
+df19$FamilySize <- as.numeric(df19$FamilySize)
+
+dfYield2 <- df19 %>%
+  select(BE, Country, FamilySize, Crop1, Crop1HA, Crop1KG, O1IncomeFarming) %>% 
+  mutate(Yield = Crop1KG / Crop1HA,
+         Check = Yield < 150) %>% 
+  filter(Check==FALSE) %>% 
+  filter (Crop1=="Cassava"|Crop1=="Maize"|Crop1=="Groundnuts, with shell") %>% 
+  group_by(BE,Crop1) %>% 
+  summarise(Mean=mean(Yield))
+dfYield2
 
 
-
-
-table(df19$O1IncomeFarming)
 
