@@ -280,15 +280,74 @@ df19$Crop1KG <- as.numeric(df19$Crop1KG)
 df19$Crop1HA <- as.numeric(df19$Crop1HA)
 df19$FamilySize <- as.numeric(df19$FamilySize)
 
+
+
 dfYield2 <- df19 %>%
-  select(BE, Country, FamilySize, Crop1, Crop1HA, Crop1KG, O1IncomeFarming) %>% 
-  mutate(Yield = Crop1KG / Crop1HA,
+  select(BE, Country, FamilySize, Crop1, Crop1HA, Crop1KG, O1IncomeFarming, ArrivalYear) %>% 
+  mutate(Yield = round(Crop1KG / Crop1HA, 0),
          Check = Yield < 150) %>% 
   filter(Check==FALSE) %>% 
   filter (Crop1=="Cassava"|Crop1=="Maize"|Crop1=="Groundnuts, with shell") %>% 
+  filter(Yield != Inf) %>% 
   group_by(BE,Crop1) %>% 
-  summarise(Mean=mean(Yield))
-dfYield2
+  summarise(avgYield = mean(Yield)) %>% 
+  ungroup() %>% 
+  arrange(Crop1)
+
+dfYield2_graph <-dfYield2 %>% 
+  ggplot(aes(x = BE, y = avgYield)) + 
+  geom_bar(position="dodge", stat="identity")  +
+  facet_wrap(~Crop1)
+
+dfYield3 <- df19 %>%
+  select(BE, Country, FamilySize, Crop1, Crop1HA, Crop1KG, O1IncomeFarming, ArrivalYear) %>% 
+  mutate(Yield = round(Crop1KG / Crop1HA, 0),
+         Check = Yield < 150) %>% 
+  filter(Check==FALSE) %>% 
+  filter (Crop1=="Cassava"|Crop1=="Maize"|Crop1=="Groundnuts, with shell") %>% 
+  filter(Yield != Inf)
+
+dfYield3_graph <- dfYield3 %>% 
+  filter(Yield < 10000) %>% 
+  ggplot(aes(x = FamilySize, y = Yield, color= Crop1))+
+  geom_point(alpha = 0.4)+
+  geom_jitter(width = 5, height = 5)+
+  geom_rug(col="brown",alpha=0.1, size=1)
+
+cor(dfYield3$FamilySize, dfYield3$Yield)
+
+dfYield3_graph2 <- dfYield3 %>% 
+  filter(Yield < 10000) %>% 
+  ggplot(aes(x = FamilySize, y = Yield, color= O1IncomeFarming))+
+  geom_point(alpha = 0.4)+
+  geom_jitter(width = 5, height = 5)+
+  geom_rug(col="brown",alpha=0.1, size=1)
+
+dfYield3_graph3 <- dfYield3 %>% 
+  filter(Yield < 10000 & Crop1 == "Cassava") %>% 
+  ggplot(aes(x = FamilySize, y = Yield, color= Crop1))+
+  geom_point(alpha = 0.4)+
+  geom_jitter(width = 5, height = 5)+
+  geom_rug(col="brown",alpha=0.1, size=1)
+
+dfYield3_graph4 <- dfYield3 %>% 
+  filter(Yield < 10000 & Crop1 == "Maize") %>% 
+  ggplot(aes(x = FamilySize, y = Yield, color= Crop1))+
+  geom_point(alpha = 0.4)+
+  geom_jitter(width = 5, height = 5)+
+  geom_rug(col="brown",alpha=0.1, size=1)
 
 
+dfYield3_graph5 <- dfYield3 %>% 
+  filter(Yield < 10000 & !is.na(ArrivalYear) & Crop1 == "Cassava") %>% 
+  ggplot(aes(x = ArrivalYear, y = Yield, color= Crop1))+
+  geom_point(alpha = 0.4)+
+  geom_jitter(width = 2, height = 2)+
+  theme(axis.text.x = element_text(angle = 45))
 
+dfYield3_graph5_cor <- dfYield3 %>% 
+  filter(Yield < 10000 & !is.na(ArrivalYear) & Crop1 == "Cassava")
+
+dfYield3_graph5_cor$ArrivalYear <- as.numeric(dfYield3_graph5_cor$ArrivalYear)
+
+cor(dfYield3_graph5_cor$ArrivalYear, dfYield3_graph5_cor$Yield)
