@@ -350,5 +350,9 @@ dfYield3_graph5_cor <- dfYield3 %>%
 
 dfYield3_graph5_cor$ArrivalYear <- as.numeric(dfYield3_graph5_cor$ArrivalYear)
 
-
 cor(dfYield3_graph5_cor$ArrivalYear, dfYield3_graph5_cor$Yield)
+
+
+lm1 <- lm(ArrivalYear ~ Yield, dfYield3_graph5_cor)
+summary(lm1)
+  
