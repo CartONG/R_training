@@ -1,0 +1,92 @@
+---
+title: "UNHCR Livelihoods Data 2019 - Major crops yield and family size"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+### 4-  static dashboard
+
+library(flexdashboard)
+library(ggplot2)
+library(plotly)
+library(plyr)
+library(tidyverse)
+
+drs_df_raw_link <- "https://raw.githubusercontent.com/CartONG/R_training/main/df19.csv?token=ALMJAS5FZNUMPT2YXW2HM23A4B6Z2"
+
+# download file again but forcing R to read all columns as character
+df19 <- read_csv(drs_df_raw_link,
+                 col_types = cols(.default = "c"))
+
+
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Yield per family size: CASSAVA
+
+```{r}
+df19$Crop1KG <- as.numeric(df19$Crop1KG)
+df19$Crop1HA <- as.numeric(df19$Crop1HA)
+df19$FamilySize <- as.numeric(df19$FamilySize)
+
+
+dfYield3 <- df19 %>%
+  select(BE, Country, FamilySize, Crop1, Crop1HA, Crop1KG, O1IncomeFarming, ArrivalYear) %>% 
+  mutate(Yield = round(Crop1KG / Crop1HA, 0),
+         Check = Yield < 150) %>% 
+  filter(Check==FALSE) %>% 
+  filter (Crop1=="Cassava"|Crop1=="Maize"|Crop1=="Groundnuts, with shell") %>% 
+  filter(Yield != Inf)
+
+dfYield_cassava <- dfYield3 %>% 
+  filter(Yield < 5000 & FamilySize < 15) %>% 
+  filter(Crop1 == "Cassava") %>% 
+  ggplot(aes(x = FamilySize, y = Yield))+
+  geom_point(colour = "green", alpha = 0.3)+
+  geom_jitter(height = 0.2, width = 0.4, colour = "green", alpha = 0.3)
+
+ggplotly(dfYield_cassava)
+#rm(dfYield_cassava)
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Yield per family size: GROUNDNUTS
+
+```{r}
+
+
+dfYield_groundnuts <- dfYield3 %>% 
+  filter(Yield < 5000 & FamilySize < 15) %>% 
+  filter(Crop1 == "Groundnuts, with shell") %>% 
+  ggplot(aes(x = FamilySize, y = Yield))+
+  geom_point(colour = "red", alpha = 0.3)+
+  geom_jitter(height = 0.2, width = 0.4, colour = "red", alpha = 0.3)
+
+ggplotly(dfYield_groundnuts)
+
+```
+
+### Yield per family size: MAIZE
+
+```{r}
+dfYield_Maize <- dfYield3 %>% 
+  filter(Yield < 5000 & FamilySize < 15) %>% 
+  filter(Crop1 == "Maize") %>% 
+  ggplot(aes(x = FamilySize, y = Yield))+
+  geom_point(colour = "blue", alpha = 0.3)+
+  geom_jitter(height = 0.2, width = 0.4, colour = "blue", alpha = 0.3)
+
+
+ggplotly(dfYield_Maize)
+
+```
+
