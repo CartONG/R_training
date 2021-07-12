@@ -1,74 +1,27 @@
-# R-Webinar
+# CartONG R-Webinar
+##### 28/06/2021
 
-
-## PRESENTATION OUTLINE 
-
-### INTRODUCTION
-
-#### 1 - What is it?
-When it was created
-Main characteristics --> Programming language developed for statistical analysis 
-
-
-#### 2 - Applications
-Fields of applicatios: brief information by industry 
-Focus on humanitarian IM + GIS
-
-#### 3 - CRAN 
-("https://cran.r-project.org/") -> The Comprhensive R Archive Network: CRAN is a network of ftp and web servers around the world that store identical, up-to-date, versions of code and documentation for R. Please use the CRAN mirror nearest to you to minimize network load. 
-
-### 4 - Libraries 
-Search for packages in Google: CRAN {"package_name"}
-
-Example Google search : "cran google sheets"
-
-CRAN page of the googlesheets4 package: https://cran.r-project.org/web/packages/googlesheets4/index.html
-googlesheets4 manual PDF: https://cran.r-project.org/web/packages/googlesheets4/googlesheets4.pdf
-
-### 5 - R Studio IDE
-Explain logic
-Version control and collaborative work
-
-## WORKFLOW
-### 1- Importing data
-A - Download data from the web
-B - Download data from Kobo (OCHA & UNHCR)
-C - Connect to external databases: DBI package
-D - Others:
-  a- Connect to HDX datasets
-  b- REST APIs (https://raw.githubusercontent.com/rstudio/cheatsheets/master/plumber.pdf)
-
-### 2- Data wrangling
-
-
-
-
-
-## Pros & cons
-#### Pros
-Open source and free of charge
-Does everything you can do in excel and more. WAY MORE
-Once familiar with the syntax, fast to implement
-Easy to reuse (as compared to Excel)$
-Easy to audit
-Supports version control
-Reads every possible format
-Multiple output formats
-Runs fast
-Support large datasets
-Support advance automation
-Lots of online ressources and active user community 
-
-#### Cons
-Steep learning curve
-Security?
-Too many libraries & packages
-
-
-
+### Presentation Outline
+1. Introduction
+2. Data workflow
+  - Importing data and connecting to databases: HDX, Kobo, relational databases
+  - Data wrangling (& transformation): Handling long xlsForms
+  - Exploring datasets: Data quality checks, visualisations
+  - Communicating: Automating PDF reports, static and interactive dashboards
+3. R’s pros & cons      
+4. Going further
 
 
 ## Ressources
-https://humanitarian-user-group.github.io
-This site hosts information related to the HumanitaRian-useR-group. This group is open to Humanitarian Information Management officers from any organisation. The initial group was created in November 2018 after a workshop in Amman funded by UNHCR.
+- [Popular beginner course in Coursera](https://www.coursera.org/projects/getting-started-with-r)
+- [Datacamp](https://www.datacamp.com/): On demand interactive courses from beginner to expert (also Python, SQL, PowerBi and others) 
+- [R for the rest of us](https://rfortherestofus.com/): Courses (some free), case studies and inspirational interviews form folks for whom R changed their life (!!!)
+- [R for Data Science](https://r4ds.had.co.nz/): Free ebook covering all the essentials of data wrangling, exploration, communication
+- [R packages guide](https://www.datacamp.com/community/tutorials/r-packages-guide): A good introduction on how packages work and which are the most popular
+- [A discussion on R security questions](https://support.rstudio.com/hc/en-us/articles/360042593974-R-and-R-Package-Security)
+- [Visualisation with ggplot2](https://www.r-graph-gallery.com/): lots of graphics examples with code, and beautiful  maps using ggplot [here](https://timogrossenbacher.ch/2016/12/beautiful-thematic-maps-with-ggplot2-only/)
+- [Create animated graphics and export them in GIF](https://gganimate.com/)
+- [Cheat sheets for the most popular libraries](https://www.rstudio.com/resources/cheatsheets/). Published by RStudio and regularly updated
+- [Guide to colour palettes in R](https://www.datanovia.com/en/blog/top-r-color-palettes-to-know-for-great-data-visualization/)
+- [Meet Hadley Wickham](http://hadley.nz/), a celebrity in the R community and author of some of the most popular libraries
 
