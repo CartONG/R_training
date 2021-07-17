@@ -1,4 +1,5 @@
 ## Shiny apps
+## Author: Abel Gelman
 
 library(tidyverse)
 # downlaod data
