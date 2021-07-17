@@ -1,6 +1,7 @@
-library(DiagrammeR) 
-
 # Creates a diagram for transforming questionnaires into XLSForm-compatible format from different sources
+# Author: Abel Gelman
+
+library(DiagrammeR) 
 
 xls_flow1 <- DiagrammeR(diagram = " 
 graph LR 
